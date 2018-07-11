@@ -9,12 +9,12 @@ RUN chown -Rf 1001:0 /var/lib/redis
 RUN chmod -Rf g+rwx /var/lib/redis
 
 # Make tmp folder globally accessible
-chmod -Rf 0777 /tmp
+RUN chmod -Rf 0777 /tmp
 
 # Find and fix permissions to allow group read/write of regular files and execute of directories.
-find /usr /etc /home $@ -user ${APP_UID} -exec chgrp --quiet ${ROOT_GID} {} \;
-find /usr /etc /home $@ -user ${APP_UID} -o -group ${ROOT_GID} -exec chmod g+rw {} \;
-find /usr /etc /home $@ -user ${APP_UID} -o -group ${ROOT_GID} -type d -exec chmod g+x {} +
+RUN find /usr /etc /home $@ -user ${APP_UID} -exec chgrp --quiet ${ROOT_GID} {} \;
+RUN find /usr /etc /home $@ -user ${APP_UID} -o -group ${ROOT_GID} -exec chmod g+rw {} \;
+RUN find /usr /etc /home $@ -user ${APP_UID} -o -group ${ROOT_GID} -type d -exec chmod g+x {} +
 
 EXPOSE 6379
 
