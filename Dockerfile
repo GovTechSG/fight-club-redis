@@ -1,12 +1,17 @@
 FROM redis:5.0-rc3
 
+ENV HOME=/var/lib/redis/
+ENV ROOT_UID=0
+ENV ROOT_GID=0
+ENV APP_UID=1001
+
 COPY redis.conf /usr/local/etc/redis/redis.conf
 
-WORKDIR /var/lib/redis/
+WORKDIR ${HOME}
 
-RUN chown -Rf 1001:0 /var/lib/redis
+RUN chown -Rf ${APP_UID}:${ROOT_GID} /var/lib/redis
 
-RUN chmod -Rf g+rwx /var/lib/redis
+RUN chmod -Rf g+rwx ${HOME}
 
 # Make tmp folder globally accessible
 RUN chmod -Rf 0777 /tmp
